@@ -18,13 +18,23 @@ class ParseWebPage(object):
         self.doc_id = None
         self.contents = None
         self.text = None
-        self.tokens = defaultdict(int)
+        self.tokens_found = 0
+        self.tokens_freq = defaultdict(int)
+        self.tokens_occ = defaultdict(list)
 
     def parse(self):
         self.get_doc_id()
         self.get_contents()
         self.get_text()
         self.count_tokens()
+
+    def print_tokens(self, count=None):
+        to_print = []
+        for token, frequency in sorted(self.tokens_freq.items(),
+                                       key=lambda p: (-p[1], p[0])):
+            to_print.append("{}: {}".format(token, frequency))
+        for line in to_print[:count]:
+            print(line)
 
     def get_doc_id(self):
         names = self.file_name.split("/")
@@ -48,24 +58,6 @@ class ParseWebPage(object):
 
     def _count_tokens_in_line(self, line):
         for token in line:
-            self.tokens[token] += 1
-
-
-
-
-if __name__ == "__main__":
-    ## set current working directory
-    os.chdir("/Users/***REMOVED******REMOVED***/Documents/UCI17-18/INF141/Assignments/simple-search-engine")
-    parsed = ParseWebPage("/Users/***REMOVED******REMOVED***/Documents/UCI17-18/INF141/Assignments/simple-search-engine/WEBPAGES_RAW/0/6")
-    parsed.parse()
-    for k, v in sorted(parsed.tokens.items(), key=lambda p: -p[1]):
-        print("{}: {}".format(k, v))
-    print(parsed.text)
-#     txt = get_contents("/Users/***REMOVED******REMOVED***/Documents/UCI17-18/INF141/Assignments/simple-search-engine/WEBPAGES_RAW/0/6")
-#     t = get_text(txt)
-#     for l in t:
-#         tk = tokenize(l)
-#         if tk:
-#             print(tk)
-#             print(tk[0])
-#             print(str(tk[0]))
+            self.tokens_freq[token] += 1
+            self.tokens_occ[token].append(self.tokens_found)
+            self.tokens_found += 1

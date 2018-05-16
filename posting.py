@@ -8,13 +8,9 @@ class Posting(object):
         self.tf_idf = tf_idf
 
     def __str__(self):
-        return "ID: {} | Freq: {} | Occ: {} | TF_IDF: {}".format(self.doc_id,
-                                                                 self.freq,
-                                                                 self.occ,
-                                                                 self.tf_idf)
+        l = ["{}: {}".format(k, v) for k, v in self.__dict__.items()]
+        return " | ".join(l)
 
     def __repr__(self):
-        return "Posting({}, {}, {}, {})".format(self.doc_id,
-                                                self.freq,
-                                                self.occ,
-                                                self.tf_idf)
+        s = ", ".join(str(v) for k, v in self.__dict__.items())
+        return "Posting({})".format(s)

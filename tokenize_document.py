@@ -12,7 +12,7 @@ def tokenize(line):
     return m
 
 
-class ParseWebPage(object):
+class TokenizeDocument(object):
     def __init__(self, file_name):
         self.file_name = file_name
         self.doc_id = None
@@ -61,3 +61,6 @@ class ParseWebPage(object):
             self.tokens_freq[token] += 1
             self.tokens_occ[token].append(self.tokens_found)
             self.tokens_found += 1
+
+    def __str__(self):
+        return "'{}' | {}".format(self.file_name, self.doc_id)

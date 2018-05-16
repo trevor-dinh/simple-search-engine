@@ -1,10 +1,10 @@
-from parse_web_page import ParseWebPage
+from tokenize_document import TokenizeDocument
 from posting import Posting
 from collections import defaultdict
 from retrieval_math import tf_idf
 
 
-class MapReduceWebPage(object):
+class ReduceIndex(object):
     def __init__(self, docs=None):
         self.docs = docs
         self.reduced_terms = defaultdict(list)
@@ -30,7 +30,6 @@ class MapReduceWebPage(object):
                 posting.tf_idf = tf_idf(posting.freq,
                                         len(self.docs),
                                         len(list_postings))
-                # print("HERE: {}".format(posting.tf_idf))
         return self.reduced_terms
 
 

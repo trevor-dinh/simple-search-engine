@@ -2,7 +2,7 @@ from pymongo import MongoClient
 from pprint import pprint
 import urllib
 
-USERNAME = "***REMOVED******REMOVED***@gmail.com"
+USERNAME = "***REMOVED***"
 PASSWORD = "***REMOVED***"
 CNTSTR =  ***REMOVED***.format(
     urllib.quote(USERNAME), urllib.quote(PASSWORD))

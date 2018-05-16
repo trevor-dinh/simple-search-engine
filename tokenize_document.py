@@ -1,4 +1,5 @@
 from doc_id import DocID
+import nltk
 import os
 import re
 from collections import defaultdict
@@ -13,6 +14,7 @@ def tokenize(line):
 
 
 class TokenizeDocument(object):
+
     def __init__(self, file_name):
         self.file_name = file_name
         self.doc_id = None
@@ -32,7 +34,7 @@ class TokenizeDocument(object):
         to_print = []
         for token, frequency in sorted(self.tokens_freq.items(),
                                        key=lambda p: (-p[1], p[0])):
-            to_print.append("{}: {}".format(token, frequency))
+            to_print.append(u"{}: {}".format(token, frequency).encode('utf-8'))
         for line in to_print[:count]:
             print(line)
 
@@ -49,12 +51,12 @@ class TokenizeDocument(object):
 
     def get_text(self):
         soup = BeautifulSoup(self.contents, "html.parser")
-        self.text = soup.get_text()
+        self.text = soup.get_text("\n")
         return self.text
 
     def count_tokens(self):
         for line in self.text.split("\n"):
-            self._count_tokens_in_line(tokenize(line))
+            self._count_tokens_in_line(nltk.word_tokenize(line))
 
     def _count_tokens_in_line(self, line):
         for token in line:

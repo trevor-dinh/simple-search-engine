@@ -22,7 +22,7 @@ if __name__ == '__main__':
     td2.print_tokens()
     mr = ReduceIndex([td1, td2])
 
-    mr.reduce_terms()
+    mr.reduce()
     mr.calc_tf_idf()
     print("Adding to database")
     for term, list_posting in mr.reduced_terms.items():
@@ -30,7 +30,7 @@ if __name__ == '__main__':
         for posting_object in list_posting:
             doc_objects = []
             doc = {"freq" : posting_object.freq,
-            "doc_id" : str(posting_object.doc_id),
+            "document" : str(posting_object.doc_id),
             "occurences" : posting_object.occ,
             "tf-idf" : posting_object.tf_idf
             }

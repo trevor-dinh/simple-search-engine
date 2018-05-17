@@ -1,5 +1,3 @@
-
-
 class Posting(object):
     def __init__(self, doc_id, freq=None, occ=None, tf_idf=None):
         self.doc_id = doc_id

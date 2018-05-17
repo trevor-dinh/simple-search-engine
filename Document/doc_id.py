@@ -1,7 +1,5 @@
-
-
 class DocID(object):
-    def __init__(self, doc_id):
+    def __init__(self, doc_id=None):
         self.doc_id = doc_id
 
     def __str__(self):

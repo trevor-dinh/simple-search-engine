@@ -1,9 +1,7 @@
-from doc_id import DocID
-import nltk
-import os
 import re
 from collections import defaultdict
-from lxml import html
+
+import nltk
 from bs4 import BeautifulSoup
 
 
@@ -15,9 +13,8 @@ def tokenize(line):
 
 class TokenizeDocument(object):
 
-    def __init__(self, file_name):
-        self.file_name = file_name
-        self.doc_id = None
+    def __init__(self, document):
+        self.document = document
         self.contents = None
         self.text = None
         self.tokens_found = 0
@@ -25,7 +22,6 @@ class TokenizeDocument(object):
         self.tokens_occ = defaultdict(list)
 
     def parse(self):
-        self.get_doc_id()
         self.get_contents()
         self.get_text()
         self.count_tokens()
@@ -38,13 +34,8 @@ class TokenizeDocument(object):
         for line in to_print[:count]:
             print(line)
 
-    def get_doc_id(self):
-        names = self.file_name.split("/")
-        self.doc_id = DocID("{}/{}".format(names[-2], names[-1]))
-        return self.doc_id
-
     def get_contents(self):
-        with open(self.file_name) as file:
+        with open(self.document.file_path) as file:
             contents = file.read()
         self.contents = contents
         return self.contents
@@ -65,4 +56,7 @@ class TokenizeDocument(object):
             self.tokens_found += 1
 
     def __str__(self):
-        return "'{}' | {}".format(self.file_name, self.doc_id)
+        return "TokenizeDocument({})".format(self.document)
+
+    def __repr__(self):
+        return "TokenizeDocument({})".format(self.document)

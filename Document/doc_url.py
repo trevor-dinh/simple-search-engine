@@ -1,11 +1,9 @@
-
-
-class DocPath(object):
-    def __init__(self, doc_path):
-        self.doc_path = doc_path
+class DocURL(object):
+    def __init__(self, doc_url=None):
+        self.doc_url = doc_url
 
     def __str__(self):
-        return "{}".format(self.doc_path)
+        return "{}".format(self.doc_url)
 
     def __repr__(self):
-        return "DocPath({})".format(self.doc_path)
+        return "DocURL({})".format(self.doc_url)

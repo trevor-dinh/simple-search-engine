@@ -28,14 +28,16 @@ if __name__ == '__main__':
     for term, list_posting in mr.reduced_terms.items():
         doc_objects = []
         for posting_object in list_posting:
-            doc_objects = []
+
+            
+
             doc = {"freq" : posting_object.freq,
             "document" : str(posting_object.doc_id),
             "occurences" : posting_object.occ,
             "tf-idf" : posting_object.tf_idf
             }
             doc_objects.append(doc)
-            
+
         term = {"token": term,
         "posting": doc_objects
         

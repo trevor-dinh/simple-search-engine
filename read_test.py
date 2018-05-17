@@ -8,6 +8,9 @@ if __name__ == '__main__':
     db = client.invertedIndexDB
     collection = db.indices
     cursor = collection.find({})
-    for document in cursor:
+    #Source: https://stackoverflow.com/a/34598654
+    for document in cursor:  
         pprint(document)
+    print(collection.find_one({"token" : "time"})) 
+    #Source: http://api.mongodb.com/python/current/tutorial.html#getting-a-single-document-with-find-one
 

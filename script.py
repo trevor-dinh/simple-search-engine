@@ -24,7 +24,17 @@ if __name__ == "__main__":
 
     mr.reduce_terms()
     mr.calc_tf_idf()
-    for term, list_posting in mr.reduced_terms.items()[:1]:
-        print term, list_posting
-        for p in list_posting:
-            print(str(p.doc_id))
+    for term, list_posting in mr.reduced_terms.items():
+        test = []
+
+        if len(list_posting) > 1:
+            print term, list_posting
+            print("\n")
+            for posting_object in list_posting:
+                doc = {"freq" : posting_object.freq,
+                "doc_id" : str(posting_object.doc_id),
+                "occurences" : posting_object.occ,
+                "tf-idf" : posting_object.tf_idf
+                }
+                test.append(doc)
+            print(test)

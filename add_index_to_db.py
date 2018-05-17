@@ -10,7 +10,7 @@ PASSWORD = "***REMOVED***"
 CONNECTION_STRING =  ***REMOVED***.format(
     urllib.quote(USERNAME), urllib.quote(PASSWORD))
 DEBUG = True
-def connect_to_database(connection_string):
+def connect_to_main_database(connection_string):
     client = MongoClient(connection_string)
     db = client.invertedIndexDB
     return db

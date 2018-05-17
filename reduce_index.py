@@ -26,7 +26,6 @@ class ReduceIndex(object):
                                   occ=tok_doc.tokens_occ[token])
                 red_terms_dict[token].append(posting)
         self.reduced_terms = red_terms_dict
-        # self.reduced_terms = pd.DataFrame(red_terms_dict)
         return self.reduced_terms
 
     def calc_tf_idf(self):

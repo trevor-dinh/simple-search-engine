@@ -24,7 +24,8 @@ class TokenizeDocument(object):
     def parse(self):
         self.get_contents()
         self.get_text()
-        self.count_tokens()
+        # self.count_tokens()
+        self.tokenize()
 
     def print_tokens(self, count=None):
         to_print = []
@@ -44,6 +45,11 @@ class TokenizeDocument(object):
         soup = BeautifulSoup(self.contents, "html.parser")
         self.text = soup.get_text("\n")
         return self.text
+
+    def tokenize(self):
+        for i, token in enumerate(nltk.word_tokenize(self.text)):
+            self.tokens_freq[token] += 1
+            self.tokens_occ[token].append(i)
 
     def count_tokens(self):
         for line in self.text.split("\n"):

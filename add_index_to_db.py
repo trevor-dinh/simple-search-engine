@@ -18,11 +18,11 @@ def connect_to_main_database(connection_string):
 def add_to_db(map_reduced_index, db_connection):
     if DEBUG:
         print(datetime.datetime.now(), ": Adding to database")
-    for term in map_reduced_index:
+    for term in map_reduced_index.reduced_terms:
         if DEBUG:
             print(term)
         doc_objects = []
-        for posting_object in map_reduced_index[term]:
+        for posting_object in map_reduced_index.reduced_terms[term]:
             doc = {"freq" : posting_object.freq,
             "document" : str(posting_object.doc_id),
             "occurences" : posting_object.occ,

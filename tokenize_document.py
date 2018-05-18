@@ -1,6 +1,6 @@
 import re
 from collections import defaultdict
-
+import io
 import nltk
 from bs4 import BeautifulSoup
 
@@ -36,7 +36,8 @@ class TokenizeDocument(object):
             print(line)
 
     def get_contents(self):
-        with open(self.document.file_path) as file:
+        with io.open(self.document.file_path,
+                     encoding='utf-8', errors='ignore') as file:
             contents = file.read()
         self.contents = contents
         return self.contents

@@ -2,7 +2,7 @@ from pymongo import MongoClient
 from pprint import pprint
 import urllib
 import json
-from add_index_to_db import CONNECTION_STRING, connect_to_database
+from add_index_to_db import CONNECTION_STRING, connect_to_main_database
 DEBUG = True
 def drop_database(db_connection, collection_to_delete):
     if DEBUG:

@@ -2,7 +2,7 @@ import re
 from collections import defaultdict
 import io
 import nltk
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Comment
 
 
 def tokenize(line):
@@ -44,11 +44,18 @@ class TokenizeDocument(object):
 
     def get_text(self):
         soup = BeautifulSoup(self.contents, "html.parser")
+        comments = soup.findAll(text=lambda text: isinstance(text, Comment))
+        #https://stackoverflow.com/questions/23299557/beautifulsoup-4-remove-comment-tag-and-its-content
+        for c in comments:
+            c.extract()
         self.text = soup.get_text("\n")
         return self.text
 
     def tokenize(self):
+        #alphanumeric_tokens = [t for t in nltk.word_tokenize(self.text) if t.isalpha()]
         for i, token in enumerate(nltk.word_tokenize(self.text)):
+            # if token in nltk.corpus.stopwords.words('english'):
+            #     continue
             self.tokens_freq[token] += 1
             self.tokens_occ[token].append(i)
 

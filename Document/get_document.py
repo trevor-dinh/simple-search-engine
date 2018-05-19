@@ -16,6 +16,12 @@ def read_json(file_name):
 def make_document(json_dict, count=None):
     doc_list = []
     for doc_id, doc_url in json_dict.items()[:count]:
+        if ".jpg" in doc_url or ".zip" in doc_url or ".png" in doc_url or ".css" in doc_url:
+            continue
+        if ".txt" in doc_url and  "Wumpus" in doc_url:
+            continue
+        if doc_id == "39/373" or doc_id == "35/269":
+            continue
         doc_list.append(Document(DocID(doc_id), DocURL(doc_url)))
     return doc_list
 

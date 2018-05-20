@@ -13,8 +13,8 @@ if __name__ == '__main__':
 		if query == "!q":
 			break
 		if query in inverted_index:
-			for p in inverted_index[query][:10]:
-				print(lookup[p['doc_id']])
+            for i,p in enumerate(inverted_index[query][:10],start=1):
+                print("{} : {}".format(i,lookup[p['doc_id']]))
 		else:
 			print("Query {} not found".format(query))
 	print("Thanks for searching")

@@ -24,7 +24,7 @@ class ReduceIndex(object):
                 posting = Posting(tok_doc.document.doc_id,
                                   freq=frequency,
                                   occ=tok_doc.tokens_occ[token])
-                print(posting.__dict__)
+                #print(posting.__dict__)
                 red_terms_dict[token].append(posting.__dict__)
         self.reduced_terms = red_terms_dict
         return self.reduced_terms

@@ -2,6 +2,7 @@ import re
 from collections import defaultdict
 import io
 import nltk
+#from nltk.tokenize import RegexpTokenizer
 from bs4 import BeautifulSoup, Comment
 
 
@@ -52,8 +53,9 @@ class TokenizeDocument(object):
         return self.text
 
     def tokenize(self):
+        #https://stackoverflow.com/questions/15547409/how-to-get-rid-of-punctuation-using-nltk-tokenizer
         #alphanumeric_tokens = [t for t in nltk.word_tokenize(self.text) if t.isalpha()]
-        for i, token in enumerate(nltk.word_tokenize(self.text)):
+        for i, token in enumerate(nltk.tokenize.RegexpTokenizer(r'\w+').tokenize(self.text)):
             # if token in nltk.corpus.stopwords.words('english'):
             #     continue
             self.tokens_freq[token] += 1

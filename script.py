@@ -7,11 +7,14 @@ from time import time
 from add_index_to_db import CONNECTION_STRING, connect_to_main_database, add_to_db
 import pickle, json
 
+def chunk(l, n):
+    for i in range(0, len(l), n):
+        yield l[i:i + n]
 
 if __name__ == "__main__":
     times = [time()]
     bookkeeping_path = os.path.join(os.getcwd(), 'WEBPAGES_RAW', "bookkeeping.json")
-    docs = make_document(read_json(bookkeeping_path))
+    docs = make_document(read_json(bookkeeping_path), 5)
     print(len(docs))
     times.append(time())
     print("(1 / 4) Made Documents")
@@ -37,21 +40,25 @@ if __name__ == "__main__":
     # for k,v in red_index.reduced_terms.items():
     # 	print(k,v)
     # 	break
-    open("milestone1.txt",'w').close()
-    m1_queries = ["Irvine", "Mondego", "Informatics"]
-    with open("milestone1.txt", "w") as f:
-        f.write("Number of documents in corpus: {}\n".format(len(td_list)))
-        f.write("Number of terms in index: {}\n".format(len(red_index.reduced_terms)))
-        f.write("Size of index on disk: {}\n".format(sys.getsizeof(red_index.reduced_terms)))
-        for q in m1_queries:
-            f.write("\n\n{}\n".format(q))
-            for i in red_index.reduced_terms[q][:10]:
-                #print(type(i))
-                p = "Posting({})".format(", ".join(
-                    '{}:{}'.format(k,v) for k,v in i.items()))
-                f.write(p)
-    with open('index.json', 'w') as fp:
-        json.dump(red_index.reduced_terms, fp)
+    # open("milestone1.txt",'w').close()
+    # m1_queries = ["Irvine", "Mondego", "Informatics"]
+    # with open("milestone1.txt", "w") as f:
+    #     f.write("Number of documents in corpus: {}\n".format(len(td_list)))
+    #     f.write("Number of terms in index: {}\n".format(len(red_index.reduced_terms)))
+    #     f.write("Size of index on disk: {}\n".format(sys.getsizeof(red_index.reduced_terms)))
+    #     for q in m1_queries:
+    #         f.write("\n\n{}\n".format(q))
+    #         for i in red_index.reduced_terms[q][:10]:
+    #             #print(type(i))
+    #             p = "Posting({})".format(", ".join(
+    #                 '{}:{}'.format(k,v) for k,v in i.items()))
+    #             f.write(p)
+    # with open('index.json', 'w') as fp:
+    #     json.dump(red_index.reduced_terms, fp)
+    db = connect_to_main_database(CONNECTION_STRING)
+    for l in chunk(red_index.reduced_terms.keys(), 100):
+        print([{k : red_index.reduced_terms[k]} for k in l])
+        db.indices.insert_many([{k : red_index.reduced_terms[k]} for k in l])
 
     #m1_queries = ["Irvine", "Mondego", "Informatics"]
     # print("Number of documents in corpus: {}".format(len(td_list)))

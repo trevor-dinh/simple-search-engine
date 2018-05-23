@@ -47,6 +47,9 @@ class TokenizeDocument(object):
         soup = BeautifulSoup(self.contents, "html.parser")
         comments = soup.findAll(text=lambda text: isinstance(text, Comment))
         #https://stackoverflow.com/questions/23299557/beautifulsoup-4-remove-comment-tag-and-its-content
+        #https://stackoverflow.com/questions/30565404/remove-all-style-scripts-and-html-tags-from-an-html-page
+        for tag in soup(['script', 'style']):
+            tag.extract()
         for c in comments:
             c.extract()
         self.text = soup.get_text("\n")
@@ -58,8 +61,9 @@ class TokenizeDocument(object):
         for i, token in enumerate(nltk.tokenize.RegexpTokenizer(r'\w+').tokenize(self.text)):
             # if token in nltk.corpus.stopwords.words('english'):
             #     continue
-            self.tokens_freq[token] += 1
-            self.tokens_occ[token].append(i)
+            lowered = token.lower()
+            self.tokens_freq[lowered] += 1
+            self.tokens_occ[lowered].append(i)
 
     def count_tokens(self):
         for line in self.text.split("\n"):

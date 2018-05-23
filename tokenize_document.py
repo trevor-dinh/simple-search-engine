@@ -61,9 +61,10 @@ class TokenizeDocument(object):
         for i, token in enumerate(nltk.tokenize.RegexpTokenizer(r'\w+').tokenize(self.text)):
             # if token in nltk.corpus.stopwords.words('english'):
             #     continue
-            lowered = token.lower()
-            self.tokens_freq[lowered] += 1
-            self.tokens_occ[lowered].append(i)
+            tok_low = token.lower()
+            self.tokens_freq[tok_low] += 1
+            self.tokens_occ[tok_low].append(i)
+
 
     def count_tokens(self):
         for line in self.text.split("\n"):

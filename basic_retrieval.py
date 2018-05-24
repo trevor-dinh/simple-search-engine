@@ -1,7 +1,7 @@
 import json, os, sys
 from pprint import pprint
 from Document.get_document import read_json, make_document
-MONGODB_CONNECTION_STRING = 'mongodb://{}:{}@10.8.51.220/invertedIndex'
+
 
 
 if __name__ == '__main__':

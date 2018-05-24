@@ -13,9 +13,10 @@ if __name__ == '__main__':
     all_docs = db.terms
     while True:
         query = raw_input(
-            "Input query here, otherwise enter 'Q' to QUIT: ").lower()
+            "Input query here, otherwise enter ':wq' to QUIT: ").lower()
         query_object = all_docs.find_one({"term": query})
-        if query == "Q":
+        print(query == ":wq")
+        if query == ":wq":
             break
         if query_object is not None:
             postings = query_object['posting_list']

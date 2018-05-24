@@ -48,8 +48,9 @@ class TokenizeDocument(object):
 
     def tokenize(self):
         for i, token in enumerate(nltk.word_tokenize(self.text)):
-            self.tokens_freq[token] += 1
-            self.tokens_occ[token].append(i)
+            token_lower = token.lower()
+            self.tokens_freq[token_lower] += 1
+            self.tokens_occ[token_lower].append(i)
 
     def count_tokens(self):
         for line in self.text.split("\n"):

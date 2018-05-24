@@ -2,7 +2,8 @@ import re
 from collections import defaultdict
 import io
 import nltk
-from bs4 import BeautifulSoup
+#from nltk.tokenize import RegexpTokenizer
+from bs4 import BeautifulSoup, Comment
 
 
 def tokenize(line):
@@ -44,14 +45,26 @@ class TokenizeDocument(object):
 
     def get_text(self):
         soup = BeautifulSoup(self.contents, "html.parser")
+        comments = soup.findAll(text=lambda text: isinstance(text, Comment))
+        #https://stackoverflow.com/questions/23299557/beautifulsoup-4-remove-comment-tag-and-its-content
+        #https://stackoverflow.com/questions/30565404/remove-all-style-scripts-and-html-tags-from-an-html-page
+        for tag in soup(['script', 'style']):
+            tag.extract()
+        for c in comments:
+            c.extract()
         self.text = soup.get_text("\n")
         return self.text
 
     def tokenize(self):
-        for i, token in enumerate(nltk.word_tokenize(self.text)):
-            token_lower = token.lower()
-            self.tokens_freq[token_lower] += 1
-            self.tokens_occ[token_lower].append(i)
+        #https://stackoverflow.com/questions/15547409/how-to-get-rid-of-punctuation-using-nltk-tokenizer
+        #alphanumeric_tokens = [t for t in nltk.word_tokenize(self.text) if t.isalpha()]
+        for i, token in enumerate(nltk.tokenize.RegexpTokenizer(r'\w+').tokenize(self.text)):
+            # if token in nltk.corpus.stopwords.words('english'):
+            #     continue
+            tok_low = token.lower()
+            self.tokens_freq[tok_low] += 1
+            self.tokens_occ[tok_low].append(i)
+
 
     def count_tokens(self):
         for line in self.text.split("\n"):

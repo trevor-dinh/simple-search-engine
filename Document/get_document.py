@@ -6,6 +6,9 @@ from doc_id import DocID
 from doc_url import DocURL
 # for using bookkeeping.json
 
+BAD_EXTENSIONS = [".jpg", ".zip", ".png", ".css"]
+BAD_FILES = ["39/373", "35/269", "8/121"]
+
 
 def read_json(file_name):
     with open(file_name) as json_data:
@@ -16,6 +19,15 @@ def read_json(file_name):
 def make_document(json_dict, count=None):
     doc_list = []
     for doc_id, doc_url in json_dict.items()[:count]:
+        for ext in BAD_EXTENSIONS:
+            if doc_url.endswith(ext):
+                continue
+        # if ".jpg" in doc_url or ".zip" in doc_url or ".png" in doc_url or ".css" in doc_url:
+        #     continue
+        if ".txt" in doc_url and "Wumpus" in doc_url:
+            continue
+        if doc_id in BAD_FILES:
+            continue
         doc_list.append(Document(DocID(doc_id), DocURL(doc_url)))
     return doc_list
 

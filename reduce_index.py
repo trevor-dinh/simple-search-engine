@@ -24,16 +24,18 @@ class ReduceIndex(object):
                 posting = Posting(tok_doc.document.doc_id,
                                   freq=frequency,
                                   occ=tok_doc.tokens_occ[token])
-                red_terms_dict[token].append(posting)
+                #print(posting.__dict__)
+                red_terms_dict[token].append(posting.__dict__)
         self.reduced_terms = red_terms_dict
         return self.reduced_terms
 
     def calc_tf_idf(self):
         for term, list_postings in self.reduced_terms.items():
             for i, posting in enumerate(list_postings):
-                posting.tf_idf = tf_idf(posting.freq,
+                posting['tf_idf'] = tf_idf(posting['freq'],
                                         len(self.tok_docs),
                                         len(list_postings))
+
         return self.reduced_terms
 
 

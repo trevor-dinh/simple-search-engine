@@ -35,8 +35,6 @@ if __name__ == "__main__":
     red_index.reduce()
     times.append(time())
     print("(3 / 5) Reduced Index. Calculating...")
-    # red_index.calc_tf_idf()
-    # red_index.champion_list()
     red_index.tf_idf_champion_list()
     times.append(time())
     print("(4 / 5) TF IDF Calculated. Vectorizing...")

@@ -17,7 +17,7 @@ def dump_to_json_file(inverted_index, file_name):
         json.dump(inverted_index, f)
 
 def convert_to_json_objects(map_reduced_index):
-    '''takes a dict of reduced terms and converts it into a list of JSON objects
+    '''takes a dict of reduced doc_terms and converts it into a list of JSON objects
     where each object is defined as
     {"term": <key>, "posting_list": posting list of term}
     '''

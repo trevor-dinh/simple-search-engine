@@ -10,6 +10,8 @@ class Posting(object):
         return " | ".join(l)
 
     def __repr__(self):
-
         s = ", ".join(str(v) for k, v in self.__dict__.items())
         return "Posting({})".format(s)
+
+    def __hash__(self):
+        return hash(self.doc_id)

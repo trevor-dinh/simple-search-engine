@@ -13,7 +13,6 @@ def tokenize(line):
 
 
 class TokenizeDocument(object):
-
     def __init__(self, document):
         self.document = document
         self.contents = None
@@ -65,7 +64,6 @@ class TokenizeDocument(object):
             self.tokens_freq[tok_low] += 1
             self.tokens_occ[tok_low].append(i)
 
-
     def count_tokens(self):
         for line in self.text.split("\n"):
             self._count_tokens_in_line(nltk.word_tokenize(line))
@@ -75,6 +73,9 @@ class TokenizeDocument(object):
             self.tokens_freq[token] += 1
             self.tokens_occ[token].append(self.tokens_found)
             self.tokens_found += 1
+
+    def tokens(self):
+        return self.tokens_freq.keys()
 
     def __str__(self):
         return "TokenizeDocument({})".format(self.document)

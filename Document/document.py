@@ -17,3 +17,6 @@ class Document(object):
     def __repr__(self):
         s = ", ".join("{}: {}".format(k, v) for k, v in self.__dict__.items())
         return "Document({})".format(s)
+
+    def __hash__(self):
+        return hash(self.doc_id)

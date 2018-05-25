@@ -7,3 +7,6 @@ class DocID(object):
 
     def __repr__(self):
         return "DocID({})".format(self.doc_id)
+
+    def __hash__(self):
+        return hash(self.doc_id)

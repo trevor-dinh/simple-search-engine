@@ -19,7 +19,7 @@ if __name__ == "__main__":
 
     times = [time()]
     bookkeeping_path = os.path.join(os.getcwd(), 'WEBPAGES_RAW', "bookkeeping.json")
-    docs = make_document(read_json(bookkeeping_path), 10000)
+    docs = make_document(read_json(bookkeeping_path), 100)
     times.append(time())
     print("(1 / 5) Made Documents. Tokenizing...")
     td_list = []
@@ -56,6 +56,18 @@ if __name__ == "__main__":
     seconds = round(times[-1] - times[0], 3)
     print("This process took {} seconds ({})".format(seconds,
                                                      timedelta(seconds=seconds)))
+
+    query = "irvine computer"
+    query_tok = TokenizeDocument(text=query)
+    query_tok.tokenize()
+    terms = red_index.merge_new_doc(query_tok)
+    query_vector = DocumentVector("query", terms)
+    query_vector.make_vector_frame()
+    print(query_vector.vector_frame)
+    query_vector.normalize()
+    print(query_vector.vector_frame)
+
+
     # for term, d in red_index.reduced_terms.items():
     #     print("{}: {}".format(term, d))
     # start = time()

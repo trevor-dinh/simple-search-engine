@@ -14,7 +14,7 @@ class DocumentVector(object):
 
     def normalize(self):
         self.vector_frame = self.vector_frame.apply(
-            lambda v: np.divide(v, np.linalg.norm(v)), axis=1)
+            lambda v: np.true_divide(v, np.linalg.norm(v)), axis=0)
 
         return self.vector_frame
 

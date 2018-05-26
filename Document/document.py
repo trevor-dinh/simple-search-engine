@@ -3,12 +3,12 @@ from doc_url import DocURL
 import os
 
 class Document(object):
-    def __init__(self, doc_id, doc_url=None, file_path=None):
+    def __init__(self, doc_id="query", doc_url=None, file_path=None):
         self.doc_id = doc_id
         self.doc_url = doc_url
         self.file_path = file_path
 
-        if self.file_path is None:
+        if self.file_path is None and self.doc_id != "query":
             self.file_path = os.path.join(os.getcwd(), 'WEBPAGES_RAW', self.doc_id.doc_id)
 
     def __str__(self):

@@ -2,6 +2,7 @@ import re
 from collections import defaultdict
 import io
 import nltk
+from Document.document import Document
 #from nltk.tokenize import RegexpTokenizer
 from bs4 import BeautifulSoup, Comment
 
@@ -13,13 +14,13 @@ def tokenize(line):
 
 
 class TokenizeDocument(object):
-    def __init__(self, document):
+    def __init__(self, document=Document(), text=""):
         self.document = document
         self.contents = None
-        self.text = None
+        self.text = text
         self.tokens_found = 0
-        self.tokens_freq = defaultdict(int)
-        self.tokens_occ = defaultdict(list)
+        self.tokens_freq = defaultdict(int)  # "token": count
+        self.tokens_occ = defaultdict(list)  # "token": [occ1, occ2...]
 
     def parse(self):
         self.get_contents()

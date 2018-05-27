@@ -21,6 +21,8 @@ class Query(object):
     def handle(self):
         self.tok_doc = TokenizeDocument(text=self.query_string)
         self.tok_doc.tokenize()
+        if not self.tok_doc.tokens_found:
+            return None
         for token in self.tok_doc.tokens_freq:
             if self.invalid_token(token):
                 return None
@@ -48,7 +50,7 @@ class Query(object):
         doc_list = []
         doc_set = set()
         for token in self.tok_doc.tokens_freq:
-            for match in self.get_top_doc_matches(token):
+            for match in self.get_top_doc_matches(token, number=int(160/self.tok_doc.tokens_found)):
                 if match["doc_id"] not in doc_set:
                     doc_list.append(match)
                     doc_set.add(match["doc_id"])
@@ -65,7 +67,7 @@ class Query(object):
         doc_cos.sort(key=lambda x: -x[1])
         return [d[0]["doc_id"] for d in doc_cos[:10]]
 
-    def get_top_doc_matches(self, token, number=30):
+    def get_top_doc_matches(self, token, number=75):
         return self.handle_db["reduced_terms"].find_one({"term": token})["posting"][:number]
 
     def invalid_token(self, token):

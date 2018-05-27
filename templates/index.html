@@ -22,6 +22,7 @@
 <div class="results">
 	{% if query %}
 	<h2>You searched for: {{ query }}</h2>
+	<h4>Top ten results ({{ time }} seconds)</h4>
 	{% for post in posts %}
 	<div class="url">
 		<a href= "https://{{ post }}">

@@ -83,6 +83,7 @@ h2, a {
 
 }
 
+
 .results {
     margin-left: 100px;
 	font-family: 'Open Sans Condensed', sans-serif;
@@ -101,4 +102,9 @@ h2, a {
 
     
 
+}
+h4 {
+    font-family: 'Open Sans Condensed', sans-serif;
+    font-weight: 300;
+    color:#404040;
 }

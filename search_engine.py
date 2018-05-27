@@ -4,6 +4,7 @@ import os
 from flask_pymongo import PyMongo
 from Document.get_document import read_json
 from handle_query import Query
+from time import time
 
 BOOKKEEPING_PATH = os.path.join(
     os.getcwd(), 'WEBPAGES_RAW', "bookkeeping.json")
@@ -36,14 +37,16 @@ def query_post():
     if len(request.form['queryField']) == 0 and DEBUG:
         print("EMPTY!!!")
     if request.form['queryField'] is not None:
+        start = time()
         search_query = request.form['queryField'].lower()
         query_results = Query(search_query, mongo.db).handle()
         if DEBUG:
             print(query_results)
         if query_results is not None:
             list_of_urls = [LOOKUP[doc_id] for doc_id in query_results]
+            time_taken = round(time() - start, 3)
             return render_template('index.html', 
-                query=request.form['queryField'], posts=list_of_urls)
+                query=request.form['queryField'], posts=list_of_urls, time=time_taken)
         else:
             return render_template('index.html', noResult=search_query)
 

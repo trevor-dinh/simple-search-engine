@@ -42,8 +42,12 @@ class Query(object):
     def cosine_similarity(self):
         self.make_document_vector()
         doc_list = []
+        doc_set = set()
         for token in self.tok_doc.tokens_freq:
-            doc_list.extend(self.get_top_doc_matches(token))
+            for match in self.get_top_doc_matches(token):
+                if match["doc_id"] not in doc_set:
+                    doc_list.append(match)
+                    doc_set.add(match["doc_id"])
         doc_cos = []
         for doc in doc_list:
             terms = self.handle_db.database["document_vector"].find_one({"doc_id": doc["doc_id"]})["term"]

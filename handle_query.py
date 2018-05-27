@@ -6,6 +6,7 @@ from collections import defaultdict
 import pandas as pd
 import numpy as np
 
+
 class Query(object):
     def __init__(self, query_string="", handle_db=None):
         self.handle_db = handle_db
@@ -16,6 +17,9 @@ class Query(object):
     def handle(self):
         self.tok_doc = TokenizeDocument(text=self.query_string)
         self.tok_doc.tokenize()
+        for token in self.tok_doc.tokens_freq:
+            if self.invalid_token(token):
+                return None
         if self.tok_doc.tokens_found == 1:
             return self.handle_db.database["reduced_terms"].find_one(
                 {"term": self.tok_doc.tokens_freq.keys()[0]})[u'posting'][:10]
@@ -26,7 +30,7 @@ class Query(object):
         metrics = []
         n = self.handle_db.database["reduced_terms"].count()
         for token, freq in self.tok_doc.tokens_freq.items():
-            df = self.handle_db.database["term_count"].find_one({"term": token})["count"]
+            df = self.handle_db.database["term_count"].find_one({"term": token})
             tokens.append(token)
             metrics.append(tf_idf(freq, n, df))
         self.document_vector = DocumentVector("query", tokens, metrics)
@@ -50,11 +54,14 @@ class Query(object):
             dp = np.dot(merged["tf_idf"], merged["tf_idfq"])
             doc_cos.append((doc, dp))
         doc_cos.sort(key=lambda x: -x[1])
-        return [d[0] for d in doc_cos[:10]]
+        return [d[0]["doc_id"] for d in doc_cos[:10]]
 
     def get_top_doc_matches(self, token, number=30):
         return self.handle_db.database["reduced_terms"].find_one({"term": token})["posting"][:number]
 
+    def invalid_token(self, token):
+        valid = self.handle_db.database["reduced_terms"].find_one({"term": token})
+        return valid is None
 
         #     for term, list_postings in new_reduced_terms.items():
         #         for posting in list_postings:

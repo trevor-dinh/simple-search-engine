@@ -13,7 +13,7 @@ import pprint
 from handle_query import Query
 
 if __name__ == "__main__":
-    q = "ttttt dddddd"
+    q = "computer science"
     db = HandleDB()
     query = Query(q, db)
     pprint.pprint(query.handle())

@@ -30,7 +30,7 @@ class Query(object):
         metrics = []
         n = self.handle_db.database["reduced_terms"].count()
         for token, freq in self.tok_doc.tokens_freq.items():
-            df = self.handle_db.database["term_count"].find_one({"term": token})
+            df = self.handle_db.database["term_count"].find_one({"term": token})["count"]
             tokens.append(token)
             metrics.append(tf_idf(freq, n, df))
         self.document_vector = DocumentVector("query", tokens, metrics)

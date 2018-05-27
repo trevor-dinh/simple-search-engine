@@ -1,0 +1,43 @@
+<head>
+	<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+	<link rel="stylesheet" type = "text/css" href="{{ url_for('static', filename='styles/index.css') }}">
+	<link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300,700" rel="stylesheet">
+</head>
+<html>
+<div class="header">
+	<img src="/static/anteater.png" alt="ZOT">
+</div>
+<div class="name">
+	<span>Zot</span>
+	<span>Zot</span>
+	<span>Go</span>
+</div>
+<div class="main">
+	<form method="post">
+	<input type="text" name="queryField" required="required">
+	<input type="submit" value="Search" name="submitButton">
+	</form>
+</div>
+<div class="results">
+	{% if query %}
+	<h2>You searched for: {{ query }}</h2>
+	{% for post in posts %}
+	<div class="url">
+		<a href= "https://{{ post }}">
+			{{ post }}
+			<!-- {{ post.doc_id }} with score {{ post.tf_idf }} -->
+		</a>
+	</div>
+	{% endfor %}
+	{% else %}
+	{% endif %}
+
+	{% if noResult %}
+	<h2>
+		Your search - <strong>{{ noResult }}</strong> - did not match any documents.
+	</h2>
+	{% else %}
+	{% endif %}
+</div>
+</html>

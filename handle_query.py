@@ -21,8 +21,9 @@ class Query(object):
             if self.invalid_token(token):
                 return None
         if self.tok_doc.tokens_found == 1:
-            return self.handle_db.database["reduced_terms"].find_one(
+            top_docs = self.handle_db.database["reduced_terms"].find_one(
                 {"term": self.tok_doc.tokens_freq.keys()[0]})[u'posting'][:10]
+            return [doc["doc_id"] for doc in top_docs]
         return self.cosine_similarity()
 
     def make_document_vector(self):

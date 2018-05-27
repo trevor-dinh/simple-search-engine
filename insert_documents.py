@@ -43,6 +43,9 @@ def insert_documents(number=None):
         dv = DocumentVector(doc_id, terms, red_index.doc_metric[doc_id])
         dv.make_vector_frame()
         dv.normalize()
+        check = dv.vector_frame[dv.vector_frame["tf_idf"] > 1]
+        if not check.empty:
+            print(check)
         dv_list.append({"doc_id": doc_id,
                         "term": dv.vector_frame["term"].values.tolist(),
                         "tf_idf": dv.vector_frame["tf_idf"].values.tolist()})
@@ -50,22 +53,22 @@ def insert_documents(number=None):
     times.append(time())
     print("(5 / 5) Vector Space created.")
 
-    db = HandleDB()
-
-    db.database["reduced_terms"].drop()
-    db.database["term_count"].drop()
-    db.database["document_vector"].drop()
-
-    db.insert_dict(red_index.reduced_terms,
-                   key="term",
-                   value="posting",
-                   collection="reduced_terms")
-    db.insert_dict(red_index.term_count,
-                   key="term",
-                   value="count",
-                   collection="term_count")
-    # print(dv_list)
-    db.insert_list(dv_list, collection="document_vector")
+    # db = HandleDB()
+    #
+    # db.database["reduced_terms"].drop()
+    # db.database["term_count"].drop()
+    # db.database["document_vector"].drop()
+    #
+    # db.insert_dict(red_index.reduced_terms,
+    #                key="term",
+    #                value="posting",
+    #                collection="reduced_terms")
+    # db.insert_dict(red_index.term_count,
+    #                key="term",
+    #                value="count",
+    #                collection="term_count")
+    # # print(dv_list)
+    # db.insert_list(dv_list, collection="document_vector")
 
     times.append(time())
 

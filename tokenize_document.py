@@ -62,6 +62,7 @@ class TokenizeDocument(object):
             # if token in nltk.corpus.stopwords.words('english'):
             #     continue
             tok_low = token.lower()
+            self.tokens_found += 1
             self.tokens_freq[tok_low] += 1
             self.tokens_occ[tok_low].append(i)
 

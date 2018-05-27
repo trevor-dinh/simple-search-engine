@@ -16,18 +16,6 @@ def dump_to_json_file(inverted_index, file_name):
     with open(file_name, 'w') as f:
         json.dump(inverted_index, f)
 
-def convert_to_json_objects(map_reduced_index):
-    '''takes a dict of reduced doc_terms and converts it into a list of JSON objects
-    where each object is defined as
-    {"term": <key>, "posting_list": posting list of term}
-    '''
-    json_objects = []
-    for k in map_reduced_index.iterkeys():
-        json_objects.append({"term" : k, "posting_list": map_reduced_index[k]})
-    return json_objects
-
-
-
 
 def connect_to_main_database(connection_string):
     client = MongoClient(connection_string)

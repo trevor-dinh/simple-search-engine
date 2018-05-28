@@ -14,12 +14,12 @@ import pprint
 from handle_query import Query
 
 if __name__ == "__main__":
-    # q = "computer"
+    q = "artificial intelligence"
     db = HandleDB()
-    # # query = Query(q, db)
-    # # pprint.pprint(query.handle())
+    query = Query(q, db)
+    pprint.pprint(query.handle())
     # insert_documents()
-    pprint.pprint(db.database["document_vector"].find_one({"doc_id": '57/494'}))
+    # pprint.pprint(db.database["document_vector"].find_one({"doc_id": '57/494'}))
 
     # print(tf_idf(1, 36664, 46))
     # {u'doc_id': u'57/494',

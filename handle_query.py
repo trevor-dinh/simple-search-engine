@@ -7,14 +7,26 @@ import pandas as pd
 import numpy as np
 from handle_db import HandleDB
 
+
+def unique_list(l):
+    new_l = []
+    check = set()
+    for item in l:
+        if item not in check:
+            new_l.append(item)
+            check.add(item)
+    return new_l
+
+
 class Query(object):
     def __init__(self, query_string="", db_connection_object=None):
-        print(type(db_connection_object))
         if type(db_connection_object) is HandleDB:
             self.handle_db = db_connection_object.database
         else:
             self.handle_db = db_connection_object
         self.query_string = query_string
+        self.num_times_queried = 0
+        self.docs_found = 0
         self.tok_doc = None
         self.document_vector = None
 
@@ -30,7 +42,8 @@ class Query(object):
             top_docs = self.handle_db["reduced_terms"].find_one(
                 {"term": self.tok_doc.tokens_freq.keys()[0]})[u'posting'][:10]
             return [doc["doc_id"] for doc in top_docs]
-        return self.cosine_similarity()
+        self.num_times_queried = self.times_queried()
+        return self.calc_similarity()
 
     def make_document_vector(self):
         tokens = []
@@ -45,34 +58,63 @@ class Query(object):
         self.document_vector.normalize()
         return self.document_vector
 
-    def cosine_similarity(self):
+    def calc_similarity(self):
         self.make_document_vector()
         doc_list = []
-        doc_set = set()
+        docs_to_find = int(160 / self.tok_doc.tokens_found)
         for token in self.tok_doc.tokens_freq:
-            for match in self.get_top_doc_matches(token, number=int(160/self.tok_doc.tokens_found)):
-                if match["doc_id"] not in doc_set:
-                    doc_list.append(match)
-                    doc_set.add(match["doc_id"])
+            doc_list = unique_list(self.get_top_doc_matches(token, docs_to_find))
+        self.docs_found = len(doc_list)
         doc_cos = []
-        for doc in doc_list:
-            terms = self.handle_db["document_vector"].find_one({"doc_id": doc["doc_id"]})["term"]
-            vector = self.handle_db["document_vector"].find_one({"doc_id": doc["doc_id"]})["tf_idf"]
-            df = pd.DataFrame({"term": terms, "tf_idf": vector})
-            merged = pd.merge(df, self.document_vector.vector_frame,
-                              how="outer", on="term",suffixes=["","q"]).fillna(0)
-            # merged = merged.drop(merged.columns[0], axis=1)
-            dp = np.dot(merged["tf_idf"], merged["tf_idfq"])
-            doc_cos.append((doc, dp))
+        for doc_id in doc_list:
+            dp = self.cosine_similarity(doc_id)
+            doc_cos.append((doc_id, dp))
         doc_cos.sort(key=lambda x: -x[1])
-        return [d[0]["doc_id"] for d in doc_cos[:10]]
+        doc_id_results = [d[0] for d in doc_cos[:10]]
+        cos_results = [d[1] for d in doc_cos[:10]]
+        self.cache_results(doc_id_results, cos_results)
+        return doc_id_results
 
     def get_top_doc_matches(self, token, number=75):
         return self.handle_db["reduced_terms"].find_one({"term": token})["posting"][:number]
 
+    def get_next_doc_matches(self, token, number=75):
+        docs = self.handle_db["reduced_terms"].find_one({"term": token})["posting"]
+        if number * self.num_times_queried > len(docs):
+            return None
+        return docs[self.num_times_queried * number: (self.num_times_queried * number) + number]
+
     def invalid_token(self, token):
         valid = self.handle_db["reduced_terms"].find_one({"term": token})
         return valid is None
+
+    def times_queried(self):
+        results = self.handle_db["search_results"].find_one({"query": self.query_string})
+        if results is not None:
+            return results["times"]
+        return 0
+
+    def cache_results(self, doc_id_results, cos_results):
+        if self.num_times_queried:
+            self.handle_db["search_results"].update_one(
+                {"query": self.query_string},
+                {"doc_id_results": doc_id_results,
+                 "cos_results": cos_results,
+                 "$inc": {"times": 1}})
+        else:
+            self.handle_db["search_results"].insert_one(
+                {"query": self.query_string,
+                 "times": 1,
+                 "doc_id_results": doc_id_results,
+                 "cos_results": cos_results})
+
+    def cosine_similarity(self, doc_id):
+        terms = self.handle_db["document_vector"].find_one({"doc_id": doc_id})["term"]
+        vector = self.handle_db["document_vector"].find_one({"doc_id": doc_id})["tf_idf"]
+        df = pd.DataFrame({"term": terms, "tf_idf": vector})
+        merged = pd.merge(df, self.document_vector.vector_frame,
+                          how="outer", on="term", suffixes=["", "q"]).fillna(0)
+        return np.dot(merged["tf_idf"], merged["tf_idfq"])
 
         #     for term, list_postings in new_reduced_terms.items():
         #         for posting in list_postings:

@@ -3,10 +3,10 @@ import json
 import urllib
 import sys
 import datetime
-USERNAME = "***REMOVED***"
-PASSWORD = "***REMOVED***"
+USERNAME = "***REDACTED***"
+PASSWORD = "***REDACTED***"
 CONNECTION_STRING = ("mongodb+srv://{}:{}"
-                     "@cluster0-ujza5.mongodb.net"
+                     "***REDACTED***"
                      "/test?retryWrites=true").format(
     urllib.quote(USERNAME), urllib.quote(PASSWORD))
 DEBUG = True

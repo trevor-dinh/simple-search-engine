@@ -48,12 +48,8 @@ def get_all_docs(directory):
 
 
 if __name__ == "__main__":
-    # get_docs_in_dir("/Users/***REMOVED******REMOVED***/Documents/UCI17-18/INF141/Assignments/simple-search-engine/WEBPAGES_RAW/0")
-    # for d in get_all_docs("/Users/***REMOVED******REMOVED***/Documents/UCI17-18/INF141/Assignments/simple-search-engine/WEBPAGES_RAW"):
-    #     print(d)
-    json_dict = read_json("/Users/***REMOVED******REMOVED***/Documents/UCI17-18/INF141/Assignments/simple-search-engine/WEBPAGES_RAW/bookkeeping.json")
+
+    json_dict = read_json("***REDACTED***")
     for doc in make_document(json_dict, 10):
         print(doc)
-    #
-    # for k, v in read_json("/Users/***REMOVED******REMOVED***/Documents/UCI17-18/INF141/Assignments/simple-search-engine/WEBPAGES_RAW/bookkeeping.json").items():
-    #     print("{}: {}".format(k, v))
+

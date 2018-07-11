@@ -20,7 +20,7 @@ def chunker(l, n):
 
 
 class HandleDB(object):
-    def __init__(self, user="***REMOVED***", password="***REMOVED***", ip="***REMOVED***"):
+    def __init__(self, user="***REDACTED***", password="***REDACTED***", ip="***REDACTED***"):
         self.user = user
         self.password = password
         self.ip = ip

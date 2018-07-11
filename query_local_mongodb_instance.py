@@ -1,14 +1,14 @@
 from pymongo import MongoClient
 import os
 from Document.get_document import read_json
-MONGODB_CONNECTION_STRING = 'mongodb://{}:{}@***REMOVED***/invertedIndex'
+MONGODB_CONNECTION_STRING = 'mongodb://{}:{}@***REDACTED***/invertedIndex'
 
 if __name__ == '__main__':
     bookkeeping_path = os.path.join(
         os.getcwd(), 'WEBPAGES_RAW', "bookkeeping.json")
     lookup = read_json(bookkeeping_path)
     client = MongoClient(
-        MONGODB_CONNECTION_STRING.format("***REMOVED***", "***REMOVED***"))
+        MONGODB_CONNECTION_STRING.format("***REDACTED***", "***REDACTED***"))
     db = client.invertedIndex
     all_docs = db.terms
     while True:

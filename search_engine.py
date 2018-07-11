@@ -12,10 +12,10 @@ LOOKUP = read_json(BOOKKEEPING_PATH)
 DEBUG = True #FOR PRINTING
 app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
-app.config["MONGO_HOST"] = "***REMOVED***" #"127.0.0.1"
-app.config["MONGO_DBNAME"] = "invertedIndex"
-app.config["MONGO_USERNAME"] = "***REMOVED***"
-app.config["MONGO_PASSWORD"] = "***REMOVED***"
+app.config["MONGO_HOST"] = "127.0.0.1"
+app.config["MONGO_DBNAME"] = "***REDACTED***"
+app.config["MONGO_USERNAME"] = "***REDACTED***"
+app.config["MONGO_PASSWORD"] = "***REDACTED***"
 app.config["MONGO_CONNECT"] = True
 mongo = PyMongo(app)
 
